@@ -11,7 +11,7 @@ Usage
 First two arguments are function to be wraped and it's execution context (thisArg). Next arguments represents `fn` execution arguments. There is `bind.$` function for obtaining args placeholders:
 
 * `bind.$()` - will be replaced by all wraper's arguments;
-* `bind.$(n)` - will be replaced by nth wraper's argument (`bind.$n` is the same as `arguments[n]` in the wraper, i.e. `bind.$(1)` will be replaced by value from `arguments[0]`).
+* `bind.$(n)` - will be replaced by nth wraper's argument (`bind.$n` is the same as `arguments[n]` in the wraper, i.e. `bind.$(0)` will be replaced by value from `arguments[0]`).
 
 `bind` returns wrapped `fn`.
 
