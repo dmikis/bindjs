@@ -1,5 +1,35 @@
 <html>
 <body>
     <script src="bind.js"></script>
+    <script>
+        function bench() {
+            var dummyFn = function () { return arguments; },
+                testFn = bind(dummyFn, this, bind.$(1), bind.$(), 'foo', bind.$(0), 1),
+                usedTime = 0;
+
+                for (var i = 0; i < 1e6; ++i) {
+                    var args = [Math.random(), Math.random(), Math.random(), Math.random()];
+
+                    var startTime = Date.now();
+                    testFn.apply(this, args);
+                    usedTime += (Date.now() - startTime);
+                }
+
+                console.log(usedTime / 1e6);
+
+                usedTime = 0;
+
+                for (var i = 0; i < 1e6; ++i) {
+                    var args = [Math.random(), Math.random(), Math.random(), Math.random()];
+
+                    var startTime = Date.now();
+                    dummyFn.apply(this, args);
+                    usedTime += (Date.now() - startTime);
+                }
+
+                console.log(usedTime / 1e6);
+        }
+    </script>
+    <input type="button" onclick="bench()" value="Bench!">
 </body>
 </html>

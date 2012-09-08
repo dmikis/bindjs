@@ -3,20 +3,28 @@
     var allArgsPlaceholder = {__isPlaceholder: true};
 
     function bind(fn, ctx, arg1 /*, ... */) {
-        var args = Array.prototype.slice.call(arguments, 2);
+        var args = Array.prototype.slice.call(arguments, 2),
+            allPlaceholderIndex = args.indexOf(allArgsPlaceholder),
+            placeholdersIndexes = args
+                .map(function (arg, i) {
+                    return Object(arg).__isPlaceholder ? i : -1;
+                })
+                .filter(function (index) { return index >= 0; });
 
         return function () {
-            var wraperArgs = Array.prototype.slice.call(arguments),
-                localArgs = args.slice(),
-                allPlaceholderIndex = localArgs.indexOf(allArgsPlaceholder);
+            var localArgs = args.slice(),
+                wrapperArgs = arguments;
+
+            placeholdersIndexes.forEach(function (i) {
+                localArgs[i] = wrapperArgs[localArgs[i].__i];
+            });
 
             if (allPlaceholderIndex >= 0) {
-                localArgs.splice.apply(localArgs, [allPlaceholderIndex, 1].concat(wraperArgs));
+                localArgs.splice.apply(localArgs,
+                    Array.prototype.concat.apply([allPlaceholderIndex, 1], wrapperArgs));
             }
 
-            return fn.apply(ctx, localArgs.map(function (arg) {
-                return (typeof arg === 'object' && arg.__isPlaceholder) ? wraperArgs[arg.__i] : arg;
-            }));
+            return fn.apply(ctx, localArgs);
         };
     }
 
