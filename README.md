@@ -26,6 +26,11 @@ Examples
 
     bind(dummyFn, this, bind.$(0), 'foo', bind.$(1), 'bar')(1, 2); // -> [1, "foo", 2, "bar"]
 
+Performance
+-----------
+
+This `bind` is slower than native one or, obviously, direct function call. After some optimizations it has become 3x-4x slower, than direct function calls. All speed optimization suggests are welcome :)
+
 See Also
 --------
 
