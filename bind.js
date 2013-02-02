@@ -5,25 +5,23 @@
     function bind(fn, ctx, arg1 /*, ... */) {
         var args = Array.prototype.slice.call(arguments, 2);
 
-        var concatCallString = ['(',
-            'Array.prototype.concat.apply([],[',
-            args
-                .map(function (arg, i) {
-                    if (Object(arg).__isPlaceholder) {
-                        return isNaN(arg.__i) ?
-                            'Array.prototype.slice.call(wrapperArgs)' :
-                            'wrapperArgs[' + arg.__i + ']';
-                    } else {
-                        return 'args[' + i + ']';
-                    }
-                })
-                .join(),
-        ']))'].join('');
+        var mapArgs = new Function('wrapperArgs, bindArgs', [
+            'return Array.prototype.concat.call([],',
+                args
+                    .maps(function (arg, i) {
+                        if (Object(arg).__isPlaceholder) {
+                            return isNaN(arg.__i) ?
+                                'Array.prototype.slice.call(wrapperArgs)' :
+                                'wrapperArgs[' + arg.__i + ']';
+                        } else {
+                            return 'bindArgs[' + i + ']';
+                        }
+                    })
+                    .join();
+            ')'].join(''));
 
         return function () {
-            var wrapperArgs = arguments;
-
-            return fn.apply(ctx, eval(concatCallString));
+            return fn.apply(ctx, mapsArgs(arguments, args));
         };
     }
 
