@@ -8,7 +8,7 @@
         var mapArgs = new Function('wrapperArgs, bindArgs', [
             'return Array.prototype.concat.call([],',
                 args
-                    .maps(function (arg, i) {
+                    .map(function (arg, i) {
                         if (Object(arg).__isPlaceholder) {
                             return isNaN(arg.__i) ?
                                 'Array.prototype.slice.call(wrapperArgs)' :
@@ -21,7 +21,7 @@
             ')'].join(''));
 
         return function () {
-            return fn.apply(ctx, mapsArgs(arguments, args));
+            return fn.apply(ctx, mapArgs(arguments, args));
         };
     }
 
