@@ -17,7 +17,7 @@
                             return 'bindArgs[' + i + ']';
                         }
                     })
-                    .join();
+                    .join(),
             ')'].join(''));
 
         return function () {
